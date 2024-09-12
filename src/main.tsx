@@ -10,4 +10,4 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <TonConnectUIProvider manifestUrl={manifestUrl}>
         <App />
     </TonConnectUIProvider>
-)
+);
