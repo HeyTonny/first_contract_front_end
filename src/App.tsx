@@ -51,6 +51,7 @@ import {TonConnectButton} from "@tonconnect/ui-react";
 import {useMainContract} from "./hooks/useMainContract";
 import {useTonConnect} from "./hooks/useTonConnect";
 import {fromNano} from "ton-core";
+import WebApp from "@twa-dev/sdk";
 
 function App() {
     const {
@@ -62,56 +63,75 @@ function App() {
         sendIncrement,
     } = useMainContract();
     const {connected} = useTonConnect();
+    const showAlert = () => {
+        WebApp.showAllert('Hey there?');
+    };
+
 
     return (
         <div>
-            <TonConnectButton/>
-
-            <div className="container">
-                <div>
-                    <h3>Contract Data:</h3>
-                    <b>Our contract Address:</b>
-                    <div className="Hint">{contract_address}</div>
-                    <hr/>
-
-                    <b>Our contract Owner:</b>
-                    <div className="Hint">{owner_address?.toString()}</div>
-                    <hr/>
-
+            <div>
+                <TonConnectButton/>
+            </div>
+            <div>
+                <div className='Card'>
+                    <b>{WebApp.platform}</b>
+                    <b>Our contract Address</b>
+                    <div className='Hint'>{contract_address?.slice(0, 30) + "..."}</div>
+                    <b>Our contract Balance</b>
                     {contract_balance && (
-                        <>
-                            <b>Our contract Balance:</b>
-                            <div className="Hint">{fromNano(contract_balance)}</div>
-                            <hr/>
-                        </>
-                    )}
-
-                    {recent_sender && (
-                        <>
-                            <b>Recent sender:</b>
-                            <div className="Hint">{recent_sender.toString()}</div>
-                            <hr/>
-                        </>
-                    )}
-
-                    <>
-                        <b>Counter Value:</b>
-                        <div>{counter_value ?? "Loading..."}</div>
-                    </>
-                </div>
-                <div>
-                    <h3>Contract actions: </h3>
-                    {connected ? (
-                        <>
-                            <p>Increment contract balance by 1 TON, with 0.05 TON as a comission</p>
-                            <button onClick={sendIncrement}>Increment</button>
-                            <hr/>
-
-                        </>
-                    ) : (
-                        <p>Connect wallet to start action</p>
+                        <div className='Hint'>{fromNano(contract_balance)}</div>
                     )}
                 </div>
+
+                <div className='Card'>
+                    <b>Counter Value</b>
+                    <div>{counter_value ?? "Loading..."}</div>
+                </div>
+
+                <a
+                    onClick={() => {
+                        showAlert();
+                    }}
+                >
+                    Show Alert
+                </a>
+
+                <br/>
+
+                {connected && (
+                    <a
+                        onClick={() => {
+                            sendIncrement();
+                        }}
+                    >
+                        Increment by 5
+                    </a>
+                )}
+
+                <br/>
+
+                {connected && (
+                    <a
+                        onClick={() => {
+                            sendDeposit();
+                        }}
+                    >
+                        Request deposit of 1 TON
+                    </a>
+                )}
+
+                <br/>
+
+                {connected && (
+                    <a
+                        onClick={() => {
+                            sendWithdrawalRequest();
+                        }}
+                    >
+                        Request 0.7 TON withdrawal
+                    </a>
+                )}
             </div>
         </div>
     );
