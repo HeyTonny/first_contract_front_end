@@ -95,6 +95,9 @@ function App() {
                     {contract_balance && (
                         <div className='Hint'>{fromNano(contract_balance)}</div>
                     )}
+                    <b>Our contract Owner:</b>
+                    <div className="Hint">{owner_address?.toString()}</div>
+                    <hr/>
                 </div>
 
                 <div className='Card'>
@@ -111,6 +114,14 @@ function App() {
                 </a>
 
                 <br/>
+
+                {recent_sender && (
+                    <>
+                        <b>Recent sender:</b>
+                        <div className="Hint">{recent_sender.toString()}</div>
+                        <hr/>
+                    </>
+                )}
 
                 {connected && (
                     <a
